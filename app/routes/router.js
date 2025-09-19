@@ -4,36 +4,40 @@ const {body, validationResult} = require("express-validator")
 
 router.get("/", (req, res) => {
  
-    res.render("pages/index",{ "nome":null, "":null, resultado: null, valores: {notas:""} });
+    res.render("pages/index",{ "nome":null, "email":null, "telefone":null, "assunto":null, "mensagem":null, resultado: null, valores: {notas:""} });
 });
 
 router.post("/media",
-    body("nota1").isInt({min: 0, max: 10}).withMessage("Deve ser um número de 0 a 10"),
-    body("nota2").isInt({min: 0, max: 10}).withMessage("Deve ser um número de 0 a 10"),
+    body("nome").isInt({min: 10, max: 30}).withMessage("Escreva o nome completo ex: fulano da silva andrade"),
+    body("email").isEmail.withMessage("Escreva o email ex: email@gmail.com"),
+    body("telefone").i({min: 11, max: 11}).withMessage("Escreva seu telefone ex: 11 987654321"),
+    body("assunto").isInt({min: 0, max: 20}).withMessage("Escreva o assunto que deseja falar"),
+    body("mensagem").isInt({min: 0, max: 1000}).withMessage("Escreva a mensagem que deseja enviar (no máximo 1000 caracteres)"),
+
 (req, res) => {
 
 
-    const erros = validationResult(req);
-    const erros2 = validationResult(req);
+    const nome = validationResult(req);
+    const email = validationResult(req);
+    const telefone = validationResult(req);
+    const assunto = validationResult(req);
+    const mensagem = validationResult(req);
 
     if(erros.isEmpty(), erros2.isEmpty()){
     
 
-    const nota1 = parseInt(req.body.nota1);
-    const nota2 = parseInt(req.body.nota2);
-    const notas = (nota1 + nota2) / 2; 
+    const nome = parseInt(req.body.nome);
+    const email = parseInt(req.body.email);
+    const telefone = parseInt(req.body.telefone);
+    const assunto = parseInt(req.body.assunto);
+    const mensagem = parseInt(req.body.mensagem);
+
     let categoria;
 
-    if (notas > 9.0 && notas <= 10.0) {
-        categoria = "A";
-    } else if (notas > 7.5 && notas <= 9.0) {
-        categoria = "B";
-    } else if (notas > 6.0 && notas <= 7.5) {
-        categoria = "C";
-    } else if (notas > 4.0 && notas <= 6.0) {
-        categoria = "D";
-    } else { 
-        categoria = "E";
+    if (nome) {
+        categoria = "Mensagem enviada com sucesso!";
+    } else {
+        categoria = "Mensagem não enviada.";
     }
 
     let objJson = {nota1, nota2, notas, categoria};
